@@ -12,14 +12,14 @@ let OnComplete: Observable<number> = OnComplete$.asObservable();
 async function WaitForEmptyQueue(executionId: number, timeout: number) {
     ExecutionQueue.push(executionId);
     return new Promise((res, rej) => {
-        let timeout: any;
+        let timer: any;
         let subscription = OnComplete.subscribe((e: number) => {
             if (e == executionId) {
-                clearTimeout(timeout);
+                clearTimeout(timer);
                 res();
             }
         })
-        timeout = setTimeout(() => {
+        timer = setTimeout(() => {
             try {
                 subscription.unsubscribe();
                 rej("Execution queue timeout");
